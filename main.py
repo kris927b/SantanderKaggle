@@ -25,6 +25,7 @@ def load_test_data(path):
 def write_predictions(preds, labels, filename):
     labels = labels.reshape((len(labels), 1))
     df = pd.DataFrame(data=np.hstack((labels, preds)), columns=['ID_code', 'target'])
+    df.set_index(keys='ID_code', inplace=True)
     df.to_csv(f'predictions/{filename}.csv')
 
 
@@ -49,12 +50,10 @@ def run():
                                 )
                             ]
                         )
-    # evaluate_model(cnn, X_dv, y_dv)
     preds_dv = predict(cnn, X_dv)
     auc = auc_score(y_dv, preds_dv)
     print(f'AUC score on development {auc}')
     preds_te = predict(cnn, X_te)
-    write_predictions(preds_dv, y_dv, 'development')
     write_predictions(preds_te, y_te, 'test')
 
 

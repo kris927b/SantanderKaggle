@@ -27,11 +27,11 @@ def build_cnn_model(in_dim,
                 metrics=['accuracy']):
     
     in_layer = Input(shape=(in_dim, 1), dtype='float32', name='Input')
-    conv_1 = Conv1D(32, 5, name='Conv1')(in_layer)
+    conv_1 = Conv1D(32, 20, name='Conv1')(in_layer)
     relu_1 = Activation('relu', name='ReLU1')(conv_1)
-    conv_2 = Conv1D(16, 3, name='Conv2')(relu_1)
+    conv_2 = Conv1D(16, 10, name='Conv2')(relu_1)
     relu_2 = Activation('relu', name='ReLU2')(conv_2)
-    max_1 = MaxPooling1D(3, strides=2, name='MaxPool1')(relu_2)
+    max_1 = MaxPooling1D(4, strides=2, name='MaxPool1')(relu_2)
     flat_1 = Flatten(name='Flatten1')(max_1)
     hidden_1 = Dense(32)(flat_1)
     relu_3 = Activation('relu')(hidden_1)
@@ -42,7 +42,7 @@ def build_cnn_model(in_dim,
     return model
 
 def fit_model(model, X_tr, y_tr, X_val, y_val, callbacks=None):
-    hist = model.fit(X_tr, y_tr, batch_size=64, epochs=2, validation_data=(X_val, y_val), callbacks=callbacks)
+    hist = model.fit(X_tr, y_tr, batch_size=128, epochs=10, validation_data=(X_val, y_val), callbacks=callbacks)
     return model, hist
 
 def evaluate_model(model, X, y):
