@@ -38,11 +38,12 @@ def run():
     X_te = X_te.reshape((len(X_te), X_te.shape[1], 1))
     cnn = build_cnn_model(X_tr.shape[1], 1)
     cnn.summary()
-    cnn, _ = fit_model(cnn, 
+    cnn, hist = fit_model(cnn, 
                         X_tr[:int(len(X_tr)*SPLIT)], 
                         y_tr[:int(len(X_tr)*SPLIT)], 
                         X_tr[int(len(X_tr)*SPLIT):], 
-                        y_tr[int(len(X_tr)*SPLIT):], 
+                        y_tr[int(len(X_tr)*SPLIT):],
+                        epochs=1, 
                         callbacks=[
                             roc_callback(
                                 training_data=(X_tr[:int(len(X_tr)*SPLIT)], y_tr[:int(len(X_tr)*SPLIT)]), 
@@ -53,10 +54,7 @@ def run():
     preds_dv = predict(cnn, X_dv)
     auc = auc_score(y_dv, preds_dv)
     print(f'AUC score on development {auc}')
-    preds_te = predict(cnn, X_te)
-    write_predictions(preds_te, y_te, 'test')
-
-
+    plot_learning(hist.history)
 
 
 

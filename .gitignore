@@ -1,3 +1,6 @@
 data/
 __pycache__/
 predictions/
+main.egg-info/
+santander.egg-info/
+visualizations/
