@@ -21,7 +21,7 @@ class roc_callback(Callback):
         print('\rroc-auc: %s - roc-auc_val: %s' % (str(round(roc,4)),str(round(roc_val,4))),end=100*' '+'\n')
         return
 
-def plot_learning(metrics):
+def plot_learning(metrics, fold):
     loss, acc, auc, val_loss, val_acc, val_auc = metrics['loss'], metrics['acc'], metrics['roc_auc'], metrics['val_loss'], metrics['val_acc'], metrics['val_roc_auc']
     _, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(30, 10))
     ax1.plot(loss, label="Training loss", linewidth=3.0)
@@ -39,7 +39,7 @@ def plot_learning(metrics):
     ax1.legend(fontsize=16, fancybox=True, framealpha=0)
     ax2.legend(fontsize=16, fancybox=True, framealpha=0)
     ax3.legend(fontsize=16, fancybox=True, framealpha=0)
-    plt.savefig(f'visualizations/CNN_AUC_{round(np.mean(val_auc), 4)}.png', bbox_inches='tight')
+    plt.savefig(f'visualizations/CNN_AUC_FOLD_{fold}.png', bbox_inches='tight')
 
 def F1_score(y_true, y_pred):
     return f1_score(y_true, y_pred)
