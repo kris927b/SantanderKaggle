@@ -31,19 +31,19 @@ def write_predictions(preds, labels, filename):
 
 
 def run():
-    X_tr, y_tr = load_data(TRAIN_PATH)
-    X_tr = X_tr.reshape((len(X_tr), X_tr.shape[1], 1))
-    X_val, y_val = load_data(DEV_PATH)
-    X_val = X_val.reshape((len(X_val), X_val.shape[1], 1))
-    fit_KFold(X_tr.shape[1], 1, build_model, X_tr, y_tr, X_val, y_val)
+    # X_tr, y_tr = load_data(TRAIN_PATH)
+    # X_tr = X_tr.reshape((len(X_tr), X_tr.shape[1], 1))
+    # X_val, y_val = load_data(DEV_PATH)
+    # X_val = X_val.reshape((len(X_val), X_val.shape[1], 1))
+    # fit_KFold(X_tr.shape[1], 1, build_model, X_tr, y_tr, X_val, y_val)
 
     ### Predict and write predictions to file
-    # X_te, y_te = load_test_data(HIDDEN_PATH)
-    # X_te = X_te.reshape((len(X_te), X_te.shape[1], 1))
-    # model = build_model(X_te.shape[1], 1)
-    # model.load_weights(MODEL_PATH)
-    # preds = predict(model, X_te)
-    # write_predictions(preds, y_te, 'prediction')
+    X_te, y_te = load_test_data(HIDDEN_PATH)
+    X_te = X_te.reshape((len(X_te), X_te.shape[1], 1))
+    model = build_model(X_te.shape[1], 1)
+    model.load_weights(MODEL_PATH)
+    preds = predict(model, X_te)
+    write_predictions(preds, y_te, 'prediction')
 
 
 

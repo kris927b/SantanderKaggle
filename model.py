@@ -1,6 +1,7 @@
 from keras.layers import Dense, Activation, Input, Conv1D, MaxPooling1D, Flatten
 from keras.models import Model
-from keras.callbacks import ModelCheckpoint
+from keras.callbacks import ModelCheckpoint, EarlyStopping
+from keras.initializers import TruncatedNormal
 from keras.layers.advanced_activations import LeakyReLU
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
@@ -13,12 +14,12 @@ def build_model(in_dim,
                 loss='binary_crossentropy', 
                 optimizer='adam', 
                 metrics=['accuracy']):
-    
+    init = TruncatedNormal()
     in_layer = Input(shape=(in_dim, 1), dtype='float32', name='Input')
-    hidden_1 = Dense(64, name='Hidden1')(in_layer)
+    hidden_1 = Dense(64, name='Hidden1', kernel_initializer=init, bias_initializer=init)(in_layer)
     relu_1 = Activation('relu', name='ReLU1')(hidden_1)
     flat = Flatten()(relu_1)
-    output = Dense(no_classes, name='Output')(flat)
+    output = Dense(no_classes, name='Output', kernel_initializer=init, bias_initializer=init)(flat)
     output = Activation('sigmoid', name='Sigmoid1')(output)
     model = Model(in_layer, output)
     model.compile(loss=loss, optimizer=optimizer, metrics=metrics)
@@ -63,7 +64,8 @@ def predict(model, X):
 def get_callbacks(name, data_tr, data_val):
     save = ModelCheckpoint(name, save_best_only=True, monitor='val_roc_auc', mode='max')
     auc = roc_callback(data_tr, data_val)
-    return [auc, save]
+    early = EarlyStopping(monitor='val_roc_auc', min_delta=0.001, patience=3, mode='max')
+    return [auc, save, early]
 
 def fit_KFold(in_dim, no_classes, model_fn, X, y, X_val, y_val, K=5):
     folds = list(StratifiedKFold(n_splits=K, shuffle=True, random_state=1).split(X, y))

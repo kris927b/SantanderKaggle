@@ -24,12 +24,12 @@ class roc_callback(Callback):
 def plot_learning(metrics, fold):
     loss, acc, auc, val_loss, val_acc, val_auc = metrics['loss'], metrics['acc'], metrics['roc_auc'], metrics['val_loss'], metrics['val_acc'], metrics['val_roc_auc']
     _, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(30, 10))
-    ax1.plot(loss, label="Training loss", linewidth=3.0)
-    ax2.plot(acc, label="Training accuracy", linewidth=3.0)
-    ax3.plot(auc, label="Training AUC", linewidth=3.0)
-    ax1.plot(val_loss, label="Validation loss", linewidth=3.0)
-    ax2.plot(val_acc, label="Validation accuracy", linewidth=3.0)
-    ax3.plot(val_auc, label="Validation AUC", linewidth=3.0)
+    ax1.plot(loss, label="Training loss", linewidth=5.0)
+    ax2.plot(acc, label="Training accuracy", linewidth=5.0)
+    ax3.plot(auc, label="Training AUC", linewidth=5.0)
+    ax1.plot(val_loss, label="Validation loss", linewidth=5.0)
+    ax2.plot(val_acc, label="Validation accuracy", linewidth=5.0)
+    ax3.plot(val_auc, label="Validation AUC", linewidth=5.0)
     ax1.set_title("Training Loss VS. Validation Loss", fontsize=24)
     ax2.set_title("Training Accuracy VS. Validation Accuracy", fontsize=24)
     ax3.set_title("Training AUC VS. Validation AUC", fontsize=24)
@@ -39,7 +39,7 @@ def plot_learning(metrics, fold):
     ax1.legend(fontsize=16, fancybox=True, framealpha=0)
     ax2.legend(fontsize=16, fancybox=True, framealpha=0)
     ax3.legend(fontsize=16, fancybox=True, framealpha=0)
-    plt.savefig(f'visualizations/CNN_AUC_FOLD_{fold}.png', bbox_inches='tight')
+    plt.savefig(f'visualizations/FFNN_FOLD_{fold}.png', bbox_inches='tight')
 
 def F1_score(y_true, y_pred):
     return f1_score(y_true, y_pred)
