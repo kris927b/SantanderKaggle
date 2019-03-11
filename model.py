@@ -6,7 +6,7 @@ from keras.layers.advanced_activations import LeakyReLU
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
 
-from utils import roc_callback, auc_score, plot_learning
+from utils import roc_callback, auc_score, plot_learning, precision_score, f1_score, recall_score
 
 
 def build_model(in_dim, 
@@ -16,8 +16,10 @@ def build_model(in_dim,
                 metrics=['accuracy']):
     init = TruncatedNormal()
     in_layer = Input(shape=(in_dim, 1), dtype='float32', name='Input')
-    hidden_1 = Dense(64, name='Hidden1', kernel_initializer=init, bias_initializer=init)(in_layer)
+    hidden_1 = Dense(128, name='Hidden1', kernel_initializer=init, bias_initializer=init)(in_layer)
     relu_1 = Activation('relu', name='ReLU1')(hidden_1)
+    #hidden_2 = Dense(64, name='Hidden2', kernel_initializer=init, bias_initializer=init)(relu_1)
+    #relu_2 = Activation('relu', name='ReLU2')(hidden_2)
     flat = Flatten()(relu_1)
     output = Dense(no_classes, name='Output', kernel_initializer=init, bias_initializer=init)(flat)
     output = Activation('sigmoid', name='Sigmoid1')(output)
@@ -83,5 +85,16 @@ def fit_KFold(in_dim, no_classes, model_fn, X, y, X_val, y_val, K=5):
 
         auc = evaluate_model(model, X_val, y_val)
         print(f'AUC score for fold {i}: {auc}')
+        
+        preds = model.predict(X_val)
+        for i in range(len(preds)):
+            preds[i][0] = round(preds[i][0])
+        print(recall_score(y_val, preds))
+        print(precision_score(y_val, preds))
+        print(f1_score(y_val, preds))
+
+
+
+
 
 
