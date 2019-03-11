@@ -40,9 +40,9 @@ def run():
     ### Predict and write predictions to file
     X_te, y_te = load_test_data(HIDDEN_PATH)
     X_te = X_te.reshape((len(X_te), X_te.shape[1], 1))
-    model = build_model(X_te.shape[1], 1)
-    model.load_weights(MODEL_PATH)
-    preds = predict(model, X_te)
+    #model = build_model(X_te.shape[1], 1)
+    #model.load_weights(MODEL_PATH)
+    #preds = predict(model, X_te)
     #write_predictions(preds, y_te, 'prediction')
 
 
